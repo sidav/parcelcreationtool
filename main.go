@@ -14,12 +14,16 @@ func main() {
 	defer console.Close_console()
 
 	running = true
-	currParcel = Parcel{}
-	currParcel.init(10, 10)
-	currMode = mode{}
-	currMode.name = "Terrain placement"
+	initVars(10, 10)
 
 	mainLoop()
+}
+
+func initVars(w, h int) {
+	currParcel = Parcel{}
+	currParcel.init(w, h)
+	currMode = mode{}
+	currMode.name = "Terrain placement"
 }
 
 func mainLoop() {

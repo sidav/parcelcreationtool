@@ -5,7 +5,7 @@ import (
 	"github.com/sidav/golibrl/console"
 )
 
-const MapRenderVOffset = 2
+const MapRenderVOffset = 3
 
 func renderScreen() {
 	console.Clear_console()
@@ -15,6 +15,7 @@ func renderScreen() {
 		string(currMode.getPlacedTerrain())), 0, 1)
 	renderParcel()
 	renderCursor()
+	renderData()
 	console.Flush_console()
 }
 
@@ -33,10 +34,20 @@ func renderParcel() {
 			for i := range terrains {
 				if terrains[i] == currParcel.Terrain[x][y] {
 					console.SetFgColor(terrainsColors[i])
-					break 
+					break
 				}
 			}
 			console.PutChar(currParcel.Terrain[x][y], x, y+MapRenderVOffset)
 		}
 	}
+}
+
+func renderData() {
+	putStringOnRightest(fmt.Sprintf("Width: %d, height %d", len(currParcel.Terrain), len(currParcel.Terrain[0])), 0)
+	putStringOnRightest(crs.lastKeypress, 5)
+}
+
+func putStringOnRightest(str string, y int) {
+	w, _ := console.GetConsoleSize()
+	console.PutString(str, w-len(str), y)
 }

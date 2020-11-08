@@ -1,11 +1,15 @@
 package main
 
-import "github.com/sidav/golibrl/console"
+import (
+	"fmt"
+	"github.com/sidav/golibrl/console"
+)
 
 type cursor struct {
 	x, y int
 	origx, origy int
 	isRectPlacing bool
+	lastKeypress string
 }
 
 func (c *cursor) normalizeCoords() {
@@ -26,17 +30,30 @@ func (c *cursor) normalizeCoords() {
 
 func control() {
 	key := console.ReadKey()
+	crs.lastKeypress = key
 	switch key {
 	case "UP": crs.y--
 	case "RIGHT": crs.x++
 	case "DOWN": crs.y++
 	case "LEFT": crs.x--
 	case "ENTER": enterKeyForMode()
-	case "TAB": break
 	case " ": currMode.switchTerrain()
-	case "ESCAPE": running = false 
+	case "n": reinitNewParcel()
+
+	case "TAB": break
+	case "ESCAPE": running = false
 	}
 	crs.normalizeCoords()
+}
+
+func reinitNewParcel() {
+	w := inputIntValue("Input new parcel width")
+	h := inputIntValue("Input new parcel height")
+	inputIntValue(fmt.Sprintf("You inputed %d %d", w, h))
+	if w == 0 || h == 0 {
+		return
+	}
+	initVars(w, h)
 }
 
 func enterKeyForMode() {
@@ -66,3 +83,4 @@ func enterKeyForMode() {
 		crs.isRectPlacing = true
 	}
 }
+
