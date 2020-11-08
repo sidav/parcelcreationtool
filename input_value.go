@@ -24,6 +24,22 @@ func inputIntValue(prompt string) int {
 	return 0
 }
 
+func inputStringValue(prompt string) string {
+	inputString := ""
+	for {
+		drawInputPrompt(prompt, inputString)
+		key := console.ReadKey()
+		if key == "ENTER" {
+			return inputString
+		}
+		if key == "BACKSPACE" && len(inputString) > 0 {
+			inputString = inputString[:len(inputString) - 1]
+		}
+		inputString += key
+	}
+	return ""
+}
+
 func drawInputPrompt(prompt, input string) {
 	console.Clear_console()
 	console.SetBgColor(console.BEIGE)

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/sidav/golibrl/console"
+	"os"
 )
 
 type cursor struct {
@@ -39,8 +41,9 @@ func control() {
 	case "ENTER": enterKeyForMode()
 	case " ": currMode.switchTerrain()
 	case "n": reinitNewParcel()
+	case "S": saveParcelToFile()
 
-	case "TAB": break
+	case "TAB": currMode.switchMode()
 	case "ESCAPE": running = false
 	}
 	crs.normalizeCoords()
@@ -81,6 +84,26 @@ func enterKeyForMode() {
 		crs.origx = crs.x
 		crs.origy = crs.y
 		crs.isRectPlacing = true
+	}
+}
+
+func saveParcelToFile() {
+	name := inputStringValue("Enter file name: ")
+	if name == "" {
+		return
+	}
+	b, err := json.Marshal(currParcel)
+	if err != nil {
+		panic(err)
+	}
+	file, err := os.OpenFile("parcels/"+name+".json", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	_, err = file.Write(b)
+	if err != nil {
+		panic(err)
 	}
 }
 

@@ -10,7 +10,7 @@ const MapRenderVOffset = 3
 func renderScreen() {
 	console.Clear_console()
 	console.SetFgColor(console.WHITE)
-	console.PutString(currMode.name, 0, 0)
+	console.PutString("Placement: " + modes[currMode.modeIndex], 0, 0)
 	console.PutString(fmt.Sprintf("Placing %s %s", terrainsNames[currMode.placedTerrainIndex],
 		string(currMode.getPlacedTerrain())), 0, 1)
 	renderParcel()

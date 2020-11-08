@@ -23,7 +23,6 @@ func initVars(w, h int) {
 	currParcel = Parcel{}
 	currParcel.init(w, h)
 	currMode = mode{}
-	currMode.name = "Terrain placement"
 }
 
 func mainLoop() {
