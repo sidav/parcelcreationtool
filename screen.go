@@ -1,13 +1,18 @@
 package main
 
-import "github.com/sidav/golibrl/console"
+import (
+	"fmt"
+	"github.com/sidav/golibrl/console"
+)
 
 const MapRenderVOffset = 2
 
 func renderScreen() {
+	console.Clear_console()
 	console.SetFgColor(console.WHITE)
 	console.PutString(currMode.name, 0, 0)
-	console.PutString("Placing: '" + string(currMode.placedTerrain) + "'", 0, 1)
+	console.PutString(fmt.Sprintf("Placing %s %s", terrains_names[currMode.placedTerrainIndex],
+		string(currMode.getPlacedTerrain())), 0, 1)
 	renderParcel()
 	renderCursor()
 	console.Flush_console()

@@ -18,7 +18,6 @@ func main() {
 	currParcel.init(10, 10)
 	currMode = mode{}
 	currMode.name = "Terrain placement"
-	currMode.placedTerrain = WALL
 
 	mainLoop()
 }

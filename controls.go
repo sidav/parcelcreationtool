@@ -32,6 +32,8 @@ func control() {
 	case "DOWN": crs.y++
 	case "LEFT": crs.x--
 	case "ENTER": enterKeyForMode()
+	case "TAB": break
+	case " ": currMode.switchTerrain()
 	case "ESCAPE": running = false 
 	}
 	crs.normalizeCoords()
@@ -54,7 +56,7 @@ func enterKeyForMode() {
 		}
 		for x := xfrom; x <= xto; x++ {
 			for y := yfrom; y <= yto; y++ {
-				currParcel.Terrain[x][y] = currMode.placedTerrain
+				currParcel.Terrain[x][y] = currMode.getPlacedTerrain()
 			}
 		}
 		crs.isRectPlacing = false
