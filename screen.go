@@ -16,6 +16,10 @@ func renderScreen() {
 func renderCursor() {
 	console.SetFgColor(console.YELLOW)
 	console.PutChar('X', crs.x, crs.y+MapRenderVOffset)
+	if crs.isRectPlacing {
+		console.SetFgColor(console.GREEN)
+		console.PutChar('X', crs.origx, crs.origy+MapRenderVOffset)
+	}
 }
 
 func renderParcel() {
