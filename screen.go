@@ -10,13 +10,24 @@ const MapRenderVOffset = 3
 func renderScreen() {
 	console.Clear_console()
 	console.SetFgColor(console.WHITE)
-	console.PutString("Placement: " + modes[currMode.modeIndex], 0, 0)
-	console.PutString(fmt.Sprintf("Placing %s %s", terrainsNames[currMode.placedTerrainIndex],
-		string(currMode.getPlacedTerrain())), 0, 1)
+	renderModeData()
 	renderParcel()
+	renderWaypoints()
 	renderCursor()
 	renderData()
 	console.Flush_console()
+}
+
+func renderModeData() {
+	console.PutString("Placement: " + modes[currMode.modeIndex], 0, 0)
+	if modes[currMode.modeIndex] == "Terrain" {
+		console.PutString(fmt.Sprintf("Placing %s %s", terrainsNames[currMode.placedTerrainIndex],
+			string(currMode.getPlacedTerrain())), 0, 1)
+	}
+	if modes[currMode.modeIndex] == "Routes" {
+		console.PutString(fmt.Sprintf("Placing %dth route, %dth waypoint", len(currParcel.Routes),
+			len(currParcel.Routes[currMode.placedRouteIndex].Waypoints)), 0, 1)
+	}
 }
 
 func renderCursor() {
@@ -25,6 +36,17 @@ func renderCursor() {
 	if crs.isRectPlacing {
 		console.SetFgColor(console.GREEN)
 		console.PutChar('X', crs.origx, crs.origy+MapRenderVOffset)
+	}
+}
+
+func renderWaypoints() {
+	console.SetFgColor(console.YELLOW)
+	if modes[currMode.modeIndex] == "Routes" {
+		for i := range currParcel.Routes[currMode.placedRouteIndex].Waypoints {
+			x := currParcel.Routes[currMode.placedRouteIndex].Waypoints[i].X
+			y := currParcel.Routes[currMode.placedRouteIndex].Waypoints[i].Y
+			console.PutString(fmt.Sprintf("%d", i), x, y+MapRenderVOffset)
+		}
 	}
 }
 

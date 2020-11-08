@@ -3,7 +3,7 @@ package main
 import "github.com/sidav/golibrl/console"
 
 var(
-	modes = [...]string{"Terrain", "Waypoint"}
+	modes = [...]string{"Terrain", "Routes"}
 	terrains      = [...]rune{'#', '.', '+', '\''}
 	terrainsNames = [...]string{"Wall", "Floor", "Door", "Window"}
 	terrainsColors = [...]int{console.RED, console.WHITE, console.YELLOW, console.CYAN}
@@ -22,6 +22,9 @@ func (m *mode) switchMode() {
 	m.modeIndex++
 	if m.modeIndex >= len(modes) {
 		m.modeIndex = 0
+	}
+	if len(currParcel.Routes) == 0 || len(currParcel.Routes) <= currMode.placedRouteIndex {
+		currParcel.Routes = append(currParcel.Routes, Route{})
 	}
 }
 

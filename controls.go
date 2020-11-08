@@ -40,7 +40,7 @@ func control() {
 	case "LEFT": crs.x--
 	case "ENTER": enterKeyForMode()
 	case " ": currMode.switchTerrain()
-	case "n": reinitNewParcel()
+	case "N": reinitNewParcel()
 	case "S": saveParcelToFile()
 
 	case "TAB": currMode.switchMode()
@@ -61,29 +61,34 @@ func reinitNewParcel() {
 
 func enterKeyForMode() {
 	// terrain mode; draw rect
-	if crs.isRectPlacing {
-		xfrom := crs.origx
-		xto := crs.x
-		if xfrom > xto {
-			xfrom = crs.x
-			xto = crs.origx
-		}
-		yfrom := crs.origy
-		yto := crs.y
-		if yfrom > yto {
-			yfrom = crs.y
-			yto = crs.origy
-		}
-		for x := xfrom; x <= xto; x++ {
-			for y := yfrom; y <= yto; y++ {
-				currParcel.Terrain[x][y] = currMode.getPlacedTerrain()
+	if modes[currMode.modeIndex] == "Terrain" {
+		if crs.isRectPlacing {
+			xfrom := crs.origx
+			xto := crs.x
+			if xfrom > xto {
+				xfrom = crs.x
+				xto = crs.origx
 			}
+			yfrom := crs.origy
+			yto := crs.y
+			if yfrom > yto {
+				yfrom = crs.y
+				yto = crs.origy
+			}
+			for x := xfrom; x <= xto; x++ {
+				for y := yfrom; y <= yto; y++ {
+					currParcel.Terrain[x][y] = currMode.getPlacedTerrain()
+				}
+			}
+			crs.isRectPlacing = false
+		} else {
+			crs.origx = crs.x
+			crs.origy = crs.y
+			crs.isRectPlacing = true
 		}
-		crs.isRectPlacing = false
-	} else {
-		crs.origx = crs.x
-		crs.origy = crs.y
-		crs.isRectPlacing = true
+	}
+	if modes[currMode.modeIndex] == "Routes" {
+		currParcel.Routes[currMode.placedRouteIndex].addWaypoint(&Waypoint{X: crs.x, Y: crs.y})
 	}
 }
 
