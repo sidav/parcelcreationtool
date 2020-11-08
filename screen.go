@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/sidav/golibrl/console"
+	"strconv"
 )
 
 const MapRenderVOffset = 3
@@ -45,7 +46,11 @@ func renderWaypoints() {
 		for i := range currParcel.Routes[currMode.placedRouteIndex].Waypoints {
 			x := currParcel.Routes[currMode.placedRouteIndex].Waypoints[i].X
 			y := currParcel.Routes[currMode.placedRouteIndex].Waypoints[i].Y
-			console.PutString(fmt.Sprintf("%d", i), x, y+MapRenderVOffset)
+			outputSymbol := strconv.Itoa(i)
+			if len(outputSymbol) > 1 {
+				outputSymbol = string(rune(int('a') + i - 10))
+			}
+			console.PutString(outputSymbol, x, y+MapRenderVOffset)
 		}
 	}
 }

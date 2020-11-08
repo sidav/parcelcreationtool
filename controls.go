@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/sidav/golibrl/console"
+	"io/ioutil"
 	"os"
 )
 
@@ -41,6 +42,7 @@ func control() {
 	case "ENTER": enterKeyForMode()
 	case " ": currMode.switchTerrain()
 	case "N": reinitNewParcel()
+	case "O": openExistingParcel()
 	case "S": saveParcelToFile()
 
 	case "TAB": currMode.switchMode()
@@ -57,6 +59,17 @@ func reinitNewParcel() {
 		return
 	}
 	initVars(w, h)
+}
+
+func openExistingParcel() {
+	name := inputStringValue("Enter file name: ")
+	if name == "" {
+		return
+	}
+	jsn, err := ioutil.ReadFile("parcels/"+name+".json")
+	if err == nil {
+		json.Unmarshal(jsn, &currParcel)
+	}
 }
 
 func enterKeyForMode() {
