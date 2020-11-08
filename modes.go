@@ -1,8 +1,11 @@
 package main
 
+import "github.com/sidav/golibrl/console"
+
 var(
-	terrains = [...]rune{'#', '.', '+', '\''}
-	terrains_names = [...]string{"Wall", "Floor", "Door", "Window"}
+	terrains      = [...]rune{'#', '.', '+', '\''}
+	terrainsNames = [...]string{"Wall", "Floor", "Door", "Window"}
+	terrainsColors = [...]int{console.RED, console.WHITE, console.YELLOW, console.CYAN}
 )
 
 type mode struct {

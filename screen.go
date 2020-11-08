@@ -11,7 +11,7 @@ func renderScreen() {
 	console.Clear_console()
 	console.SetFgColor(console.WHITE)
 	console.PutString(currMode.name, 0, 0)
-	console.PutString(fmt.Sprintf("Placing %s %s", terrains_names[currMode.placedTerrainIndex],
+	console.PutString(fmt.Sprintf("Placing %s %s", terrainsNames[currMode.placedTerrainIndex],
 		string(currMode.getPlacedTerrain())), 0, 1)
 	renderParcel()
 	renderCursor()
@@ -30,6 +30,12 @@ func renderCursor() {
 func renderParcel() {
 	for x :=range(currParcel.Terrain) {
 		for y := range (currParcel.Terrain[x]) {
+			for i := range terrains {
+				if terrains[i] == currParcel.Terrain[x][y] {
+					console.SetFgColor(terrainsColors[i])
+					break 
+				}
+			}
 			console.PutChar(currParcel.Terrain[x][y], x, y+MapRenderVOffset)
 		}
 	}
