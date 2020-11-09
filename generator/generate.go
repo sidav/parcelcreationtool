@@ -12,16 +12,33 @@ const triesForParcel = 5
 type Generator struct {
 	level   Level
 	parcels []*Parcel
+	templates []*Parcel
 }
 
-func (g *Generator) Generate(parcelsDir string, sizex, sizey int, desiredParcels int) *Level {
+func (g *Generator) Generate(parcelsDir, templatesDir string, sizex, sizey int, desiredParcels int) *Level {
 	rnd.InitDefault()
 	g.level = Level{}
-	g.level.init(sizex, sizey)
 	g.parcels = make([]*Parcel, 0)
+	g.templates = make([]*Parcel, 0)
 
+	// init fucking templates
+	items, _ := ioutil.ReadDir(templatesDir)
+	for _, item := range items {
+		if item.IsDir() {
+
+		} else {
+			newTemplate := Parcel{}
+			newTemplate.UnmarshalFromFile(templatesDir + "/" + item.Name())
+			g.templates = append(g.templates, &newTemplate)
+		}
+	}
+	if len(g.templates) == 0 {
+		g.level.init(sizex, sizey)
+	} else {
+		g.level.initFromTemplate(g.templates[rnd.RandInRange(0, len(g.templates)-1)])
+	}
 	//init fucking parcels
-	items, _ := ioutil.ReadDir(parcelsDir)
+	items, _ = ioutil.ReadDir(parcelsDir)
 	for _, item := range items {
 		if item.IsDir() {
 
@@ -61,16 +78,6 @@ func (g *Generator) placeRandomParcel() bool {
 	if len(clearCoords) == 0 {
 		return false
 	}
-	g.applyParcelAtCoords(prc, &clearCoords[rnd.Rand(len(clearCoords))])
+	g.level.applyParcelAtCoords(prc, &clearCoords[rnd.Rand(len(clearCoords))])
 	return true
-}
-
-func (g *Generator) applyParcelAtCoords(prc *Parcel, xy *[]int) {
-	x, y := (*xy)[0], (*xy)[1]
-	pw, ph := len(prc.Terrain), len(prc.Terrain[0])
-	for i := 0; i < pw; i++ {
-		for j:=0; j < ph; j++{
-			g.level.Terrain[i+x][j+y] = prc.Terrain[i][j]
-		}
-	}
 }

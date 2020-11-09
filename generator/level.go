@@ -1,5 +1,7 @@
 package generator
 
+import . "parcelcreationtool/parcel"
+
 type Level struct {
 	Terrain [][]rune
 }
@@ -13,6 +15,23 @@ func (l *Level) init(w, h int) {
 		}
 	}
 }
+
+func (l *Level) initFromTemplate(tmp *Parcel) {
+	w, h := tmp.GetSize()
+	l.init(w, h)
+	l.applyParcelAtCoords(tmp, &[]int{0, 0})
+}
+
+func (l *Level) applyParcelAtCoords(prc *Parcel, xy *[]int) {
+	x, y := (*xy)[0], (*xy)[1]
+	pw, ph := len(prc.Terrain), len(prc.Terrain[0])
+	for i := 0; i < pw; i++ {
+		for j:=0; j < ph; j++{
+			l.Terrain[i+x][j+y] = prc.Terrain[i][j]
+		}
+	}
+}
+
 
 func (l *Level) getSize() (int,int) {
 	return len(l.Terrain), len(l.Terrain[0])

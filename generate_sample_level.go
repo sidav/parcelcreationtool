@@ -10,7 +10,7 @@ func generateAndRenderSample() {
 	key := ""
 	for key != "ESCAPE" {
 		w, h := console.GetConsoleSize()
-		lvl := gen.Generate("parcels", w, h, 100)
+		lvl := gen.Generate("parcels", "templates", w, h, 100)
 		// render level 
 		for x := 0; x < len(lvl.Terrain); x++ {
 			for y := 0; y < len(lvl.Terrain[0]); y++ {

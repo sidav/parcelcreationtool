@@ -30,6 +30,10 @@ func (p *Parcel) Init(w, h int) {
 	p.Routes = make([]Route, 0)
 }
 
+func (p *Parcel) GetSize() (int, int) {
+	return len(p.Terrain), len(p.Terrain[0])
+}
+
 func (p *Parcel) MarshalToFile(filename string) {
 	folderName := strings.Split(filename, "/")[0]
 
