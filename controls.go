@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/sidav/golibrl/console"
+	"os"
 	. "parcelcreationtool/parcel"
 )
 
@@ -102,10 +103,19 @@ func enterKeyForMode() {
 }
 
 func saveParcelToFile() {
-	name := inputStringValue("Enter file name: ")
+	name := inputStringValue("Enter file name (blank for auto name): ")
 	if name == "" {
-		return
+		i := 0
+		for {
+			name = fmt.Sprintf("parcel_%d", i)
+			_, err := os.Stat("parcels/" + name + ".json")
+			if os.IsNotExist(err) {
+				break
+			}
+			i++
+		}
 	}
 	currParcel.MarshalToFile("parcels/" + name + ".json")
+	inputStringValue("Saved as " + "parcels/" + name + ".json")
 }
 
