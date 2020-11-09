@@ -6,6 +6,7 @@ import (
 	"github.com/sidav/golibrl/console"
 	"io/ioutil"
 	"os"
+	. "parcelcreationtool/parcel"
 )
 
 type cursor struct {
@@ -44,6 +45,7 @@ func control() {
 	case "N": reinitNewParcel()
 	case "O": openExistingParcel()
 	case "S": saveParcelToFile()
+	case "g": generateAndRenderSample()
 
 	case "TAB": currMode.switchMode()
 	case "ESCAPE": running = false
@@ -101,7 +103,7 @@ func enterKeyForMode() {
 		}
 	}
 	if modes[currMode.modeIndex] == "Routes" {
-		currParcel.Routes[currMode.placedRouteIndex].addWaypoint(&Waypoint{X: crs.x, Y: crs.y})
+		currParcel.Routes[currMode.placedRouteIndex].AddWaypoint(&Waypoint{X: crs.x, Y: crs.y})
 	}
 }
 

@@ -1,11 +1,18 @@
-package main
+package parcel
+
+const (
+	FLOOR = '.'
+	WALL = '#'
+	DOOR = '+'
+)
+
 
 type Parcel struct {
 	Terrain [][]rune
 	Routes[] Route
 }
 
-func (p *Parcel) init(w, h int) {
+func (p *Parcel) Init(w, h int) {
 	p.Terrain = make([][]rune, w)
 	for i := range p.Terrain {
 		p.Terrain[i] = make([]rune, h)
@@ -25,6 +32,6 @@ type Route struct {
 	Waypoints []Waypoint
 }
 
-func (r *Route) addWaypoint(w *Waypoint) {
+func (r *Route) AddWaypoint(w *Waypoint) {
 	r.Waypoints = append(r.Waypoints, *w)
 }

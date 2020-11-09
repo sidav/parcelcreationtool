@@ -1,6 +1,7 @@
 package main
 
 import "github.com/sidav/golibrl/console"
+import . "parcelcreationtool/parcel"
 
 var (
 	crs cursor
@@ -21,7 +22,7 @@ func main() {
 
 func initVars(w, h int) {
 	currParcel = Parcel{}
-	currParcel.init(w, h)
+	currParcel.Init(w, h)
 	currMode = mode{}
 }
 

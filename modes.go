@@ -1,12 +1,13 @@
 package main
 
 import "github.com/sidav/golibrl/console"
+import . "parcelcreationtool/parcel"
 
 var(
 	modes = [...]string{"Terrain", "Routes"}
-	terrains      = [...]rune{'#', '.', '+', '\''}
-	terrainsNames = [...]string{"Wall", "Floor", "Door", "Window"}
-	terrainsColors = [...]int{console.RED, console.WHITE, console.YELLOW, console.CYAN}
+	terrains      = [...]rune{'#', '.', '+', '\'', '?'}
+	terrainsNames = [...]string{"Wall", "Floor", "Door", "Window", "Place for parcel"}
+	terrainsColors = [...]int{console.RED, console.WHITE, console.YELLOW, console.CYAN, console.BLACK}
 )
 
 type mode struct {
