@@ -88,5 +88,13 @@ func (p *Parcel) Rotate(times int) {
 			}
 		}
 		p.Terrain = ter
+		for i := range p.Routes {
+			for j := range p.Routes[i].Waypoints {
+				oldx := p.Routes[i].Waypoints[j].X
+				oldy := p.Routes[i].Waypoints[j].Y
+				p.Routes[i].Waypoints[j].X = oldy
+				p.Routes[i].Waypoints[j].Y = w-oldx-1
+			}
+		}
 	}
 }
