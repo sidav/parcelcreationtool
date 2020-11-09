@@ -1,11 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/sidav/golibrl/console"
-	"io/ioutil"
-	"os"
 	. "parcelcreationtool/parcel"
 )
 
@@ -68,10 +65,7 @@ func openExistingParcel() {
 	if name == "" {
 		return
 	}
-	jsn, err := ioutil.ReadFile("parcels/"+name+".json")
-	if err == nil {
-		json.Unmarshal(jsn, &currParcel)
-	}
+	currParcel.UnmarshalFromFile("parcels/"+name+".json")
 }
 
 func enterKeyForMode() {
@@ -112,18 +106,6 @@ func saveParcelToFile() {
 	if name == "" {
 		return
 	}
-	b, err := json.Marshal(currParcel)
-	if err != nil {
-		panic(err)
-	}
-	file, err := os.OpenFile("parcels/"+name+".json", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	_, err = file.Write(b)
-	if err != nil {
-		panic(err)
-	}
+	currParcel.MarshalToFile("parcels/" + name + ".json")
 }
 

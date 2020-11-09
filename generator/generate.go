@@ -1,7 +1,6 @@
 package generator
 
 import (
-	"encoding/json"
 	"github.com/sidav/golibrl/random/additive_random"
 	"io/ioutil"
 	. "parcelcreationtool/parcel"
@@ -27,12 +26,8 @@ func (g *Generator) Generate(parcelsDir string, sizex, sizey int, desiredParcels
 		if item.IsDir() {
 
 		} else {
-			filebytes, err := ioutil.ReadFile(parcelsDir + "/" + item.Name())
-			if err != nil {
-				panic(err)
-			}
 			newParcel := Parcel{}
-			json.Unmarshal(filebytes, &newParcel)
+			newParcel.UnmarshalFromFile(parcelsDir + "/" + item.Name())
 			g.parcels = append(g.parcels, &newParcel)
 		}
 	}
