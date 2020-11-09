@@ -54,7 +54,8 @@ func control() {
 	case "TAB": currMode.switchTerrain()
 	case "N": reinitNewParcel()
 	case "O": openExistingParcel()
-	case "S": saveParcelToFile()
+	case "S": saveParcelToFile(false)
+	case "T": saveParcelToFile(true)
 	case "g": generateAndRenderSample()
 
 	case "m": currMode.switchMode()
@@ -114,20 +115,24 @@ func enterKeyForMode() {
 	}
 }
 
-func saveParcelToFile() {
-	name := inputStringValue("Enter file name (blank for auto name): ")
+func saveParcelToFile(asTemplate bool) {
+	folderName := "parcels"
+	if asTemplate {
+		folderName = "templates"
+	}
+	name := inputStringValue("SAVING AS " + folderName + ": Enter file name (blank for auto name): ")
 	if name == "" {
 		i := 0
 		for {
 			name = fmt.Sprintf("parcel_%d", i)
-			_, err := os.Stat("parcels/" + name + ".json")
+			_, err := os.Stat(folderName + "/" + name + ".json")
 			if os.IsNotExist(err) {
 				break
 			}
 			i++
 		}
 	}
-	currParcel.MarshalToFile("parcels/" + name + ".json")
-	inputStringValue("Saved as " + "parcels/" + name + ".json")
+	currParcel.MarshalToFile(folderName + "/" + name + ".json")
+	inputStringValue("Saved as " + folderName + "/" + name + ".json")
 }
 

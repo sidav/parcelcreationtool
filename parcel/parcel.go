@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 const (
@@ -30,11 +31,16 @@ func (p *Parcel) Init(w, h int) {
 }
 
 func (p *Parcel) MarshalToFile(filename string) {
+	folderName := strings.Split(filename, "/")[0]
+
 	b, err := json.Marshal(p)
 	if err != nil {
 		panic(err)
 	}
-	file, err := os.OpenFile(filename, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+	if _, err := os.Stat(folderName); os.IsNotExist(err) {
+		os.Mkdir(folderName, 0777)
+	}
+	file, err := os.OpenFile(filename, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
 	}
