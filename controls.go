@@ -30,6 +30,18 @@ func (c *cursor) normalizeCoords() {
 
 }
 
+func (c *cursor) getRectSize() (int, int) {
+	w := c.origx - c.x
+	h := c.origy - c.y
+	if w < 0 {
+		w = -w
+	}
+	if h < 0 {
+		h = -h
+	}
+	return w+1, h+1
+}
+
 func control() {
 	key := console.ReadKey()
 	crs.lastKeypress = key
@@ -39,13 +51,13 @@ func control() {
 	case "DOWN": crs.y++
 	case "LEFT": crs.x--
 	case "ENTER": enterKeyForMode()
-	case " ": currMode.switchTerrain()
+	case "TAB": currMode.switchTerrain()
 	case "N": reinitNewParcel()
 	case "O": openExistingParcel()
 	case "S": saveParcelToFile()
 	case "g": generateAndRenderSample()
 
-	case "TAB": currMode.switchMode()
+	case "m": currMode.switchMode()
 	case "ESCAPE": running = false
 	}
 	crs.normalizeCoords()

@@ -70,7 +70,11 @@ func renderParcel() {
 }
 
 func renderData() {
-	putStringOnRightest(fmt.Sprintf("Width: %d, height %d", len(currParcel.Terrain), len(currParcel.Terrain[0])), 0)
+	putStringOnRightest(fmt.Sprintf("Whole parcel width: %d, height %d", len(currParcel.Terrain), len(currParcel.Terrain[0])), 0)
+	if crs.isRectPlacing {
+		w, h := crs.getRectSize()
+		putStringOnRightest(fmt.Sprintf("Curr rect width: %d, height %d", w, h), 1)
+	}
 	putStringOnRightest(crs.lastKeypress, 5)
 }
 
