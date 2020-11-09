@@ -74,3 +74,19 @@ type Route struct {
 func (r *Route) AddWaypoint(w *Waypoint) {
 	r.Waypoints = append(r.Waypoints, *w)
 }
+
+func (p *Parcel) Rotate(times int) {
+	for t := 0; t < times; t++ {
+		w, h := p.GetSize()
+		ter := make([][]rune, h)
+		for i := range ter {
+			ter[i] = make([]rune, w)
+		}
+		for x := range p.Terrain {
+			for y := range p.Terrain[0] {
+				ter[y][w-x-1] = p.Terrain[x][y]
+			}
+		}
+		p.Terrain = ter
+	}
+}

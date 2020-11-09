@@ -35,7 +35,9 @@ func (g *Generator) Generate(parcelsDir, templatesDir string, sizex, sizey int, 
 	if len(g.templates) == 0 {
 		g.level.init(sizex, sizey)
 	} else {
-		g.level.initFromTemplate(g.templates[rnd.RandInRange(0, len(g.templates)-1)])
+		templateForInit := g.templates[rnd.RandInRange(0, len(g.templates)-1)]
+		templateForInit.Rotate(rnd.Rand(4))
+		g.level.initFromTemplate(templateForInit)
 	}
 	//init fucking parcels
 	items, _ = ioutil.ReadDir(parcelsDir)
@@ -65,6 +67,7 @@ func (g *Generator) Generate(parcelsDir, templatesDir string, sizex, sizey int, 
 
 func (g *Generator) placeRandomParcel() bool {
 	prc := g.parcels[rnd.Rand(len(g.parcels))]
+	prc.Rotate(rnd.Rand(4))
 	pw, ph := len(prc.Terrain), len(prc.Terrain[0])
 	w, h := g.level.getSize()
 	clearCoords := make([][]int, 0)

@@ -56,6 +56,7 @@ func control() {
 	case "O": openExistingParcel()
 	case "S": saveParcelToFile(false)
 	case "T": saveParcelToFile(true)
+	case "r": currParcel.Rotate(1)
 	case "g": generateAndRenderSample()
 
 	case "m": currMode.switchMode()
