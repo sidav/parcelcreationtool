@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/sidav/golibrl/console"
+	"io/ioutil"
 	"os"
 	. "parcelcreationtool/parcel"
 )
@@ -76,11 +77,26 @@ func reinitNewParcel() {
 }
 
 func openExistingParcel() {
-	name := inputStringValue("Enter file name: ")
+	prompt := *getParcelFileNames("parcels")
+	prompt = append(prompt, "Enter file name: ")
+	name := inputStringValue(&prompt)
 	if name == "" {
 		return
 	}
 	currParcel.UnmarshalFromFile("parcels/"+name+".json")
+}
+
+func getParcelFileNames(folderName string) *[]string {
+	pfn := make([]string, 0)
+	files, err := ioutil.ReadDir("./")
+	if err != nil {
+		panic(err)
+	}
+
+	for _, f := range files {
+		pfn = append(pfn, f.Name())
+	}
+	return &pfn
 }
 
 func enterKeyForMode() {
@@ -121,7 +137,13 @@ func saveParcelToFile(asTemplate bool) {
 	if asTemplate {
 		folderName = "templates"
 	}
-	name := inputStringValue("SAVING AS " + folderName + ": Enter file name (blank for auto name): ")
+
+	prompt := *getParcelFileNames(folderName)
+	prompt = append(prompt, "SAVING AS " + folderName + ": Enter file name (blank for auto name): ")
+	name := inputStringValue(&prompt)
+	if name == "ESCAPE" {
+		return
+	}
 	if name == "" {
 		i := 0
 		for {
@@ -134,6 +156,6 @@ func saveParcelToFile(asTemplate bool) {
 		}
 	}
 	currParcel.MarshalToFile(folderName + "/" + name + ".json")
-	inputStringValue("Saved as " + folderName + "/" + name + ".json")
+	inputStringValue(&[]string{"Saved as " + folderName + "/" + name + ".json"})
 }
 
