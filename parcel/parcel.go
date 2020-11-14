@@ -24,7 +24,7 @@ func (p *Parcel) Init(w, h int) {
 	for i := range p.Terrain {
 		p.Terrain[i] = make([]rune, h)
 		for j := range p.Terrain[i] {
-			p.Terrain[i][j] = FLOOR
+			p.Terrain[i][j] = WALL
 		}
 	}
 	p.Routes = make([]Route, 0)

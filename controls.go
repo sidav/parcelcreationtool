@@ -54,7 +54,8 @@ func control() {
 	case "ENTER": enterKeyForMode()
 	case "TAB": currMode.switchTerrain()
 	case "N": reinitNewParcel()
-	case "O": openExistingParcel()
+	case "o": openExistingParcel()
+	case "O": openExistingTemplate()
 	case "S": saveParcelToFile(false)
 	case "T": saveParcelToFile(true)
 	case "r": currParcel.Rotate(1)
@@ -86,9 +87,19 @@ func openExistingParcel() {
 	currParcel.UnmarshalFromFile("parcels/"+name+".json")
 }
 
+func openExistingTemplate() {
+	prompt := *getParcelFileNames("templates")
+	prompt = append(prompt, "Enter file name: ")
+	name := inputStringValue(&prompt)
+	if name == "" {
+		return
+	}
+	currParcel.UnmarshalFromFile("templates/"+name+".json")
+}
+
 func getParcelFileNames(folderName string) *[]string {
 	pfn := make([]string, 0)
-	files, err := ioutil.ReadDir("./")
+	files, err := ioutil.ReadDir(folderName)
 	if err != nil {
 		panic(err)
 	}
@@ -147,7 +158,7 @@ func saveParcelToFile(asTemplate bool) {
 	if name == "" {
 		i := 0
 		for {
-			name = fmt.Sprintf("parcel_%d", i)
+			name = fmt.Sprintf("parcel%d", i)
 			_, err := os.Stat(folderName + "/" + name + ".json")
 			if os.IsNotExist(err) {
 				break
