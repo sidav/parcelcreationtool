@@ -86,6 +86,7 @@ func openExistingParcel() {
 		return
 	}
 	currParcel.UnmarshalFromFile("parcels/"+name+".json")
+	currOpenedFileName = name
 }
 
 func openExistingTemplate() {
@@ -96,6 +97,7 @@ func openExistingTemplate() {
 		return
 	}
 	currParcel.UnmarshalFromFile("templates/"+name+".json")
+	currOpenedFileName = name
 }
 
 func getParcelFileNames(folderName string) *[]string {
@@ -176,19 +178,26 @@ func saveParcelToFile(asTemplate bool) {
 
 	prompt := *getParcelFileNames(folderName)
 	prompt = append(prompt, "SAVING AS " + folderName + ": Enter file name (blank for auto name): ")
+	if currOpenedFileName != "" {
+		prompt = append(prompt, "Empty name will be replaced with " + currOpenedFileName)
+	}
 	name := inputStringValue(&prompt)
 	if name == "ESCAPE" {
 		return
 	}
 	if name == "" {
-		i := 0
-		for {
-			name = fmt.Sprintf("parcel%d", i)
-			_, err := os.Stat(folderName + "/" + name + ".json")
-			if os.IsNotExist(err) {
-				break
+		if currOpenedFileName != "" {
+			name = currOpenedFileName
+		} else {
+			i := 0
+			for {
+				name = fmt.Sprintf("parcel%d", i)
+				_, err := os.Stat(folderName + "/" + name + ".json")
+				if os.IsNotExist(err) {
+					break
+				}
+				i++
 			}
-			i++
 		}
 	}
 	currParcel.MarshalToFile(folderName + "/" + name + ".json")

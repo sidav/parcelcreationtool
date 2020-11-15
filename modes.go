@@ -9,6 +9,8 @@ var(
 	terrainsNames = [...]string{"Wall", "Floor", "Door", "Window", "Place for parcel"}
 	terrainsColors = [...]int{console.RED, console.WHITE, console.YELLOW, console.CYAN, console.BLACK}
 	savedItems = []Item{}
+
+	currOpenedFileName string
 )
 
 type mode struct {
