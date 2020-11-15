@@ -13,6 +13,7 @@ func renderScreen() {
 	console.SetFgColor(console.WHITE)
 	renderModeData()
 	renderParcel()
+	renderItems()
 	renderWaypoints()
 	renderCursor()
 	renderData()
@@ -28,6 +29,16 @@ func renderModeData() {
 	if modes[currMode.modeIndex] == "Routes" {
 		console.PutString(fmt.Sprintf("Placing %dth route, %dth waypoint", len(currParcel.Routes),
 			len(currParcel.Routes[currMode.placedRouteIndex].Waypoints)), 0, 1)
+	}
+	if modes[currMode.modeIndex] == "Items" {
+		if len(savedItems) > 0 {
+			console.PutString(fmt.Sprintf("Placing %s %s",
+				savedItems[currMode.placedItemIndex].Name,
+				string(savedItems[currMode.placedItemIndex].DisplayedChar),
+			), 0, 1)
+		} else {
+			console.PutString("No items created...", 0, 1)
+		}
 	}
 }
 
@@ -51,6 +62,15 @@ func renderWaypoints() {
 				outputSymbol = string(rune(int('a') + i - 10))
 			}
 			console.PutString(outputSymbol, x, y+MapRenderVOffset)
+		}
+	}
+}
+
+func renderItems() {
+	console.SetFgColor(console.RED)
+	if modes[currMode.modeIndex] == "Items" {
+		for _, i := range currParcel.Items {
+			console.PutChar(i.DisplayedChar, i.X, i.Y+MapRenderVOffset)
 		}
 	}
 }

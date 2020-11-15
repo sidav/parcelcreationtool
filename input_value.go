@@ -14,8 +14,11 @@ func inputIntValue(prompt string) int {
 			res, _ := strconv.Atoi(inputString)
 			return res
 		}
-		if key == "BACKSPACE" && len(inputString) > 0 {
-			inputString = inputString[:len(inputString) - 1]
+		if key == "BACKSPACE" {
+			if len(inputString) > 0 {
+				inputString = inputString[:len(inputString)-1]
+			}
+			continue
 		}
 		if len(key) < 2 && key != " " {
 			inputString += key
@@ -32,8 +35,11 @@ func inputStringValue(prompts *[]string) string {
 		if key == "ENTER" {
 			return inputString
 		}
-		if key == "BACKSPACE" && len(inputString) > 0 {
-			inputString = inputString[:len(inputString) - 1]
+		if key == "BACKSPACE" {
+			if len(inputString) > 0 {
+				inputString = inputString[:len(inputString)-1]
+			}
+			continue
 		}
 		if key == "ESCAPE" {
 			return "ESCAPE"

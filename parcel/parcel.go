@@ -17,6 +17,7 @@ const (
 type Parcel struct {
 	Terrain [][]rune
 	Routes[] Route
+	Items []Item
 }
 
 func (p *Parcel) Init(w, h int) {
@@ -62,6 +63,10 @@ func (p *Parcel) UnmarshalFromFile(filename string) {
 	}
 }
 
+func (p *Parcel) AddItem(i *Item) {
+	p.Items = append(p.Items, *i)
+}
+
 type Waypoint struct {
 	X, Y int
 	Props string
@@ -96,5 +101,29 @@ func (p *Parcel) Rotate(times int) {
 				p.Routes[i].Waypoints[j].Y = w-oldx-1
 			}
 		}
+		for i := range p.Items {
+			oldx := p.Items[i].X
+			oldy := p.Items[i].Y
+			p.Items[i].X = oldy
+			p.Items[i].Y = w-oldx-1
+		}
 	}
+}
+
+type Item struct {
+	X, Y int
+	Name string
+	Props string
+	DisplayedChar rune
+}
+
+func (i *Item) CreateCloneAt(x, y int) *Item {
+	newItem := Item{
+		X:             x,
+		Y:             y,
+		Name:          i.Name,
+		Props:         i.Props,
+		DisplayedChar: i.DisplayedChar,
+	}
+	return &newItem
 }

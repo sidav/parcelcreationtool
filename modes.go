@@ -4,10 +4,11 @@ import "github.com/sidav/golibrl/console"
 import . "parcelcreationtool/parcel"
 
 var(
-	modes = [...]string{"Terrain", "Routes"}
+	modes = [...]string{"Terrain", "Routes", "Items"}
 	terrains      = [...]rune{'#', '.', '+', '\'', '?'}
 	terrainsNames = [...]string{"Wall", "Floor", "Door", "Window", "Place for parcel"}
 	terrainsColors = [...]int{console.RED, console.WHITE, console.YELLOW, console.CYAN, console.BLACK}
+	savedItems = []Item{}
 )
 
 type mode struct {
@@ -17,6 +18,8 @@ type mode struct {
 
 	placedRouteIndex int
 	currWaypointIndex int
+
+	placedItemIndex int
 }
 
 func (m *mode) switchMode() {
@@ -39,3 +42,11 @@ func (m *mode) switchTerrain() {
 		m.placedTerrainIndex = 0
 	}
 }
+
+func (m *mode) switchItem() {
+	m.placedItemIndex++
+	if m.placedItemIndex >= len(savedItems) {
+		m.placedItemIndex = 0
+	}
+}
+

@@ -52,8 +52,9 @@ func control() {
 	case "DOWN": crs.y++
 	case "LEFT": crs.x--
 	case "ENTER": enterKeyForMode()
-	case "TAB": currMode.switchTerrain()
+	case "TAB": tabKeyForMode()
 	case "N": reinitNewParcel()
+	case "n": createNewItem()
 	case "o": openExistingParcel()
 	case "O": openExistingTemplate()
 	case "S": saveParcelToFile(false)
@@ -110,6 +111,16 @@ func getParcelFileNames(folderName string) *[]string {
 	return &pfn
 }
 
+func tabKeyForMode() {
+	// terrain mode; draw rect
+	if modes[currMode.modeIndex] == "Terrain" {
+		currMode.switchTerrain()
+	}
+	if modes[currMode.modeIndex] == "Items" {
+		currMode.switchItem()
+	}
+}
+
 func enterKeyForMode() {
 	// terrain mode; draw rect
 	if modes[currMode.modeIndex] == "Terrain" {
@@ -141,6 +152,20 @@ func enterKeyForMode() {
 	if modes[currMode.modeIndex] == "Routes" {
 		currParcel.Routes[currMode.placedRouteIndex].AddWaypoint(&Waypoint{X: crs.x, Y: crs.y})
 	}
+	if modes[currMode.modeIndex] == "Items" && len(savedItems) > 0 {
+		currParcel.AddItem(savedItems[currMode.placedItemIndex].CreateCloneAt(crs.x, crs.y))
+	}
+}
+
+func createNewItem() {
+	newItem := Item{
+		X:             0,
+		Y:             0,
+		Name:          inputStringValue(&[]string{"Enter item name: "}),
+		Props:         "",
+		DisplayedChar: rune(inputStringValue(&[]string{"Enter item look: "})[0]),
+	}
+	savedItems = append(savedItems, newItem)
 }
 
 func saveParcelToFile(asTemplate bool) {
