@@ -5,6 +5,7 @@ import . "parcelcreationtool/parcel"
 type Level struct {
 	Terrain [][]rune
 	Routes []Route
+	Items []Item
 }
 
 func (l *Level) init(w, h int) {
@@ -41,6 +42,10 @@ func (l *Level) applyParcelAtCoords(prc *Parcel, xy *[]int) {
 			newRoute.Waypoints = append(newRoute.Waypoints, newWp)
 		}
 		l.Routes = append(l.Routes, newRoute)
+	}
+	for _, i := range prc.Items {
+		newItem := i.CreateCloneAt(x+i.X, y+i.Y)
+		l.Items = append(l.Items, *newItem)
 	}
 }
 
