@@ -71,6 +71,7 @@ func control() {
 func reinitNewParcel() {
 	w := inputIntValue("Input new parcel width")
 	h := inputIntValue("Input new parcel height")
+	currOpenedFileName = ""
 	inputIntValue(fmt.Sprintf("You inputed %d %d", w, h))
 	if w == 0 || h == 0 {
 		return
@@ -87,6 +88,7 @@ func openExistingParcel() {
 	}
 	currParcel.UnmarshalFromFile("parcels/"+name+".json")
 	currOpenedFileName = name
+	readItemsFromParcel(&currParcel)
 }
 
 func openExistingTemplate() {
@@ -98,6 +100,23 @@ func openExistingTemplate() {
 	}
 	currParcel.UnmarshalFromFile("templates/"+name+".json")
 	currOpenedFileName = name
+	readItemsFromParcel(&currParcel)
+}
+
+func readItemsFromParcel(p *Parcel) {
+	// savedItems = []Item{}
+	for _, i := range p.Items {
+		save := true
+		for _, alreadySaved := range savedItems {
+			if alreadySaved.Name == i.Name && alreadySaved.Props == i.Props {
+				save = false
+			}
+		}
+		if save {
+			savedItems = append(savedItems, *i.CreateCloneAt(0, 0))
+			continue
+		}
+	}
 }
 
 func getParcelFileNames(folderName string) *[]string {
