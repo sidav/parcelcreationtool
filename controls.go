@@ -61,6 +61,16 @@ func control() {
 	case "T": saveParcelToFile(true)
 	case "r": currParcel.Rotate(1)
 	case "g": generateAndRenderSample()
+	case "x": // remove item 
+		if modes[currMode.modeIndex] == "Items" {
+			for i, item := range currParcel.Items {
+				if crs.x == item.X && crs.y == item.Y {
+					currParcel.Items[i] = currParcel.Items[len(currParcel.Items)-1]
+					currParcel.Items = currParcel.Items[:len(currParcel.Items)-1]
+					break
+				}
+			}
+		}
 
 	case "m": currMode.switchMode()
 	case "ESCAPE": running = false

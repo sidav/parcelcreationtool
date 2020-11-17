@@ -68,6 +68,12 @@ func (g *Generator) Generate(parcelsDir, templatesDir string, sizex, sizey int, 
 func (g *Generator) placeRandomParcel() bool {
 	prc := g.parcels[rnd.Rand(len(g.parcels))]
 	prc.Rotate(rnd.Rand(4))
+	if rnd.OneChanceFrom(2) {
+		prc.MirrorX()
+	}
+	if rnd.OneChanceFrom(2) {
+		prc.MirrorY()
+	}
 	pw, ph := len(prc.Terrain), len(prc.Terrain[0])
 	w, h := g.level.getSize()
 	clearCoords := make([][]int, 0)

@@ -9,15 +9,14 @@ import (
 
 const (
 	FLOOR = '.'
-	WALL = '#'
-	DOOR = '+'
+	WALL  = '#'
+	DOOR  = '+'
 )
-
 
 type Parcel struct {
 	Terrain [][]rune
-	Routes[] Route
-	Items []Item
+	Routes  []Route
+	Items   []Item
 }
 
 func (p *Parcel) Init(w, h int) {
@@ -68,7 +67,7 @@ func (p *Parcel) AddItem(i *Item) {
 }
 
 type Waypoint struct {
-	X, Y int
+	X, Y  int
 	Props string
 }
 
@@ -98,22 +97,78 @@ func (p *Parcel) Rotate(times int) {
 				oldx := p.Routes[i].Waypoints[j].X
 				oldy := p.Routes[i].Waypoints[j].Y
 				p.Routes[i].Waypoints[j].X = oldy
-				p.Routes[i].Waypoints[j].Y = w-oldx-1
+				p.Routes[i].Waypoints[j].Y = w - oldx - 1
 			}
 		}
 		for i := range p.Items {
 			oldx := p.Items[i].X
 			oldy := p.Items[i].Y
 			p.Items[i].X = oldy
-			p.Items[i].Y = w-oldx-1
+			p.Items[i].Y = w - oldx - 1
 		}
 	}
 }
 
+func (p *Parcel) MirrorX() {
+	w, h := p.GetSize()
+	ter := make([][]rune, w)
+	for i := range ter {
+		ter[i] = make([]rune, h)
+	}
+	for x := range p.Terrain {
+		for y := range p.Terrain[0] {
+			ter[w-x-1][y] = p.Terrain[x][y]
+		}
+	}
+	p.Terrain = ter
+	for i := range p.Routes {
+		for j := range p.Routes[i].Waypoints {
+			oldx := p.Routes[i].Waypoints[j].X
+			oldy := p.Routes[i].Waypoints[j].Y
+			p.Routes[i].Waypoints[j].X = w - oldx - 1
+			p.Routes[i].Waypoints[j].Y = oldy
+		}
+	}
+	for i := range p.Items {
+		oldx := p.Items[i].X
+		oldy := p.Items[i].Y
+		p.Items[i].X = w - oldx - 1
+		p.Items[i].Y = oldy
+	}
+}
+
+func (p *Parcel) MirrorY() {
+	w, h := p.GetSize()
+	ter := make([][]rune, w)
+	for i := range ter {
+		ter[i] = make([]rune, h)
+	}
+	for x := range p.Terrain {
+		for y := range p.Terrain[0] {
+			ter[x][h-y-1] = p.Terrain[x][y]
+		}
+	}
+	p.Terrain = ter
+	for i := range p.Routes {
+		for j := range p.Routes[i].Waypoints {
+			oldx := p.Routes[i].Waypoints[j].X
+			oldy := p.Routes[i].Waypoints[j].Y
+			p.Routes[i].Waypoints[j].X = oldx
+			p.Routes[i].Waypoints[j].Y = h - oldy - 1
+		}
+	}
+	for i := range p.Items {
+		oldx := p.Items[i].X
+		oldy := p.Items[i].Y
+		p.Items[i].X = oldx
+		p.Items[i].Y = h - oldy - 1
+	}
+}
+
 type Item struct {
-	X, Y int
-	Name string
-	Props string
+	X, Y          int
+	Name          string
+	Props         string
 	DisplayedChar rune
 }
 
