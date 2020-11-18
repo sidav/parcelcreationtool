@@ -21,7 +21,7 @@ func renderScreen() {
 }
 
 func renderModeData() {
-	console.PutString("Placement: " + modes[currMode.modeIndex], 0, 0)
+	console.PutString("Placement: "+modes[currMode.modeIndex], 0, 0)
 	if modes[currMode.modeIndex] == "Terrain" {
 		console.PutString(fmt.Sprintf("Placing %s %s", terrainsNames[currMode.placedTerrainIndex],
 			string(currMode.getPlacedTerrain())), 0, 1)
@@ -68,16 +68,16 @@ func renderWaypoints() {
 
 func renderItems() {
 	console.SetFgColor(console.RED)
-	if modes[currMode.modeIndex] == "Items" {
-		for _, i := range currParcel.Items {
-			console.PutChar(i.DisplayedChar, i.X, i.Y+MapRenderVOffset)
-		}
+	// if modes[currMode.modeIndex] == "Items" {
+	for _, i := range currParcel.Items {
+		console.PutChar(i.DisplayedChar, i.X, i.Y+MapRenderVOffset)
 	}
+	// }
 }
 
 func renderParcel() {
-	for x :=range(currParcel.Terrain) {
-		for y := range (currParcel.Terrain[x]) {
+	for x := range currParcel.Terrain {
+		for y := range currParcel.Terrain[x] {
 			for i := range terrains {
 				if terrains[i] == currParcel.Terrain[x][y] {
 					console.SetFgColor(terrainsColors[i])
