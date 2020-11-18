@@ -61,16 +61,7 @@ func control() {
 	case "T": saveParcelToFile(true)
 	case "r": currParcel.Rotate(1)
 	case "g": generateAndRenderSample()
-	case "x": // remove item
-		if modes[currMode.modeIndex] == "Items" {
-			for i, item := range currParcel.Items {
-				if crs.x == item.X && crs.y == item.Y {
-					currParcel.Items[i] = currParcel.Items[len(currParcel.Items)-1]
-					currParcel.Items = currParcel.Items[:len(currParcel.Items)-1]
-					break
-				}
-			}
-		}
+	case "x": deleteAtCursor()
 
 	case "m": currMode.switchMode()
 	case "ESCAPE": running = false
@@ -140,6 +131,29 @@ func getParcelFileNames(folderName string) *[]string {
 		pfn = append(pfn, f.Name())
 	}
 	return &pfn
+}
+
+func deleteAtCursor() {
+	if modes[currMode.modeIndex] == "Items" {
+		for i, item := range currParcel.Items {
+			if crs.x == item.X && crs.y == item.Y {
+				currParcel.Items[i] = currParcel.Items[len(currParcel.Items)-1]
+				currParcel.Items = currParcel.Items[:len(currParcel.Items)-1]
+				break
+			}
+		}
+	}
+	if modes[currMode.modeIndex] == "Routes" {
+		for i, wp := range currParcel.Routes[currMode.placedRouteIndex].Waypoints {
+			if crs.x == wp.X && crs.y == wp.Y {
+				currParcel.Routes[currMode.placedRouteIndex].Waypoints[i] =
+					currParcel.Routes[currMode.placedRouteIndex].Waypoints[len(currParcel.Items)-1]
+				currParcel.Routes[currMode.placedRouteIndex].Waypoints =
+					currParcel.Routes[currMode.placedRouteIndex].Waypoints[:len(currParcel.Items)-1]
+				break
+			}
+		}
+	}
 }
 
 func tabKeyForMode() {
