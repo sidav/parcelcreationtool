@@ -56,6 +56,12 @@ func (g *Generator) Generate(parcelsDir, templatesDir string, sizex, sizey int, 
 		templateForInit := g.templates[rnd.RandInRange(0, len(g.templates)-1)]
 		g.templateRotatedTimes = rnd.Rand(4)
 		templateForInit.Rotate(g.templateRotatedTimes)
+		if rnd.OneChanceFrom(2) {
+			templateForInit.MirrorX()
+		}
+		if rnd.OneChanceFrom(2) {
+			templateForInit.MirrorY()
+		}
 		g.level.initFromTemplate(templateForInit)
 	}
 	// randomly place parcels on the map
