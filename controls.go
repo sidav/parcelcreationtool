@@ -146,10 +146,11 @@ func deleteAtCursor() {
 	if modes[currMode.modeIndex] == "Routes" {
 		for i, wp := range currParcel.Routes[currMode.placedRouteIndex].Waypoints {
 			if crs.x == wp.X && crs.y == wp.Y {
+				wpInCurrRoute := len(currParcel.Routes[currMode.placedRouteIndex].Waypoints)
 				currParcel.Routes[currMode.placedRouteIndex].Waypoints[i] =
-					currParcel.Routes[currMode.placedRouteIndex].Waypoints[len(currParcel.Items)-1]
+					currParcel.Routes[currMode.placedRouteIndex].Waypoints[wpInCurrRoute-1]
 				currParcel.Routes[currMode.placedRouteIndex].Waypoints =
-					currParcel.Routes[currMode.placedRouteIndex].Waypoints[:len(currParcel.Items)-1]
+					currParcel.Routes[currMode.placedRouteIndex].Waypoints[:wpInCurrRoute-1]
 				break
 			}
 		}
@@ -160,6 +161,9 @@ func tabKeyForMode() {
 	// terrain mode; draw rect
 	if modes[currMode.modeIndex] == "Terrain" {
 		currMode.switchTerrain()
+	}
+	if modes[currMode.modeIndex] == "Routes" {
+		currMode.switchOrCreateRoute()
 	}
 	if modes[currMode.modeIndex] == "Items" {
 		currMode.switchItem()
@@ -195,6 +199,9 @@ func enterKeyForMode() {
 		}
 	}
 	if modes[currMode.modeIndex] == "Routes" {
+		if len(currParcel.Routes) == currMode.placedRouteIndex {
+			currParcel.Routes = append(currParcel.Routes, Route{})
+		}
 		currParcel.Routes[currMode.placedRouteIndex].AddWaypoint(&Waypoint{X: crs.x, Y: crs.y})
 	}
 	if modes[currMode.modeIndex] == "Items" && len(savedItems) > 0 {

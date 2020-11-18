@@ -27,8 +27,12 @@ func renderModeData() {
 			string(currMode.getPlacedTerrain())), 0, 1)
 	}
 	if modes[currMode.modeIndex] == "Routes" {
-		console.PutString(fmt.Sprintf("Placing %dth route, %dth waypoint", len(currParcel.Routes),
-			len(currParcel.Routes[currMode.placedRouteIndex].Waypoints)), 0, 1)
+		waypointsNum := 0
+		if len(currParcel.Routes) > currMode.placedRouteIndex {
+			waypointsNum = len(currParcel.Routes[currMode.placedRouteIndex].Waypoints)
+		}
+		console.PutString(fmt.Sprintf("Placing route %d (of %d), %dth waypoint", currMode.placedRouteIndex+1,
+			len(currParcel.Routes), waypointsNum), 0, 1)
 	}
 	if modes[currMode.modeIndex] == "Items" {
 		if len(savedItems) > 0 {
@@ -53,7 +57,7 @@ func renderCursor() {
 
 func renderWaypoints() {
 	console.SetFgColor(console.YELLOW)
-	if modes[currMode.modeIndex] == "Routes" {
+	if modes[currMode.modeIndex] == "Routes" && len(currParcel.Routes) > currMode.placedRouteIndex {
 		for i := range currParcel.Routes[currMode.placedRouteIndex].Waypoints {
 			x := currParcel.Routes[currMode.placedRouteIndex].Waypoints[i].X
 			y := currParcel.Routes[currMode.placedRouteIndex].Waypoints[i].Y

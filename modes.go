@@ -45,6 +45,13 @@ func (m *mode) switchTerrain() {
 	}
 }
 
+func (m *mode) switchOrCreateRoute() {
+	m.placedRouteIndex++
+	if m.placedRouteIndex == len(currParcel.Routes)+1 {
+		m.placedRouteIndex = 0
+	}
+}
+
 func (m *mode) switchItem() {
 	m.placedItemIndex++
 	if m.placedItemIndex >= len(savedItems) {
