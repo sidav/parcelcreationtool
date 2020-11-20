@@ -62,6 +62,8 @@ func control() {
 	case "r": currParcel.Rotate(1)
 	case "g": generateAndRenderSample()
 	case "x": deleteAtCursor()
+	case "L": currParcel.AddW()
+	case "J":currParcel.AddH()
 
 	case "m": currMode.switchMode()
 	case "ESCAPE": running = false

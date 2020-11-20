@@ -30,6 +30,20 @@ func (p *Parcel) Init(w, h int) {
 	p.Routes = make([]Route, 0)
 }
 
+func (p *Parcel) AddH() {
+	for i := range p.Terrain {
+		p.Terrain[i] = append(p.Terrain[i], FLOOR)
+	}
+}
+
+func (p *Parcel) AddW() {
+	w, h := p.GetSize()
+	p.Terrain = append(p.Terrain, make([]rune, h))
+	for j := range p.Terrain[w] {
+		p.Terrain[w][j] = FLOOR
+	}
+}
+
 func (p *Parcel) GetSize() (int, int) {
 	return len(p.Terrain), len(p.Terrain[0])
 }
