@@ -5,7 +5,7 @@ import (
 	"github.com/sidav/golibrl/console"
 	"io/ioutil"
 	"os"
-	. "parcelcreationtool/parcel"
+	. "github.com/sidav/parcelcreationtool/parcel"
 )
 
 type cursor struct {

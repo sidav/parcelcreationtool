@@ -3,7 +3,7 @@ package generator
 import (
 	"github.com/sidav/golibrl/random/additive_random"
 	"io/ioutil"
-	. "parcelcreationtool/parcel"
+	. "github.com/sidav/parcelcreationtool/parcel"
 )
 
 var rnd additive_random.FibRandom

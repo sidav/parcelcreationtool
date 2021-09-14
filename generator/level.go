@@ -1,6 +1,6 @@
 package generator
 
-import . "parcelcreationtool/parcel"
+import . "github.com/sidav/parcelcreationtool/parcel"
 
 type Level struct {
 	Terrain [][]rune

@@ -1,7 +1,7 @@
 package main
 
 import "github.com/sidav/golibrl/console"
-import . "parcelcreationtool/parcel"
+import . "github.com/sidav/parcelcreationtool/parcel"
 
 var (
 	crs cursor
